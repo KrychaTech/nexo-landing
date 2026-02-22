@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexo — Twój telefon. Twoja cena.</title>
+  <meta name="description" content="Nexo — odnowione i używane urządzenia Apple oraz Android w uczciwej cenie." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      scroll-snap-align: start;
+    }
+
+    /* Subtle grain */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      mix-blend-mode: overlay;
+    }
+
+    /* Animated gradient blocks */
+    .hero, .features {
+      background: linear-gradient(130deg, #000, #0a0a0a, #111, #050505);
+      background-size: 300% 300%;
+      animation: gradientShift 22s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Hero */
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 0.25; transform: translateX(-50%) scale(1); }
+      50% { opacity: 0.5; transform: translateX(-50%) scale(1.08); }
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 600;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      color: #aaa;
+      margin-bottom: 40px;
+    }
+
+    .mockup {
+      width: 280px;
+      height: 560px;
+      border-radius: 40px;
+      background: linear-gradient(145deg, #111, #000);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+      margin-top: 60px;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    .mockup:hover {
+      box-shadow: 0 0 80px rgba(255,255,255,0.12), 0 40px 80px rgba(0,0,0,0.8);
+      transform: scale(1.03);
+    }
+
+    /* Button sweep */
+    .button {
+      position: relative;
+      overflow: hidden;
+      padding: 14px 32px;
+      border-radius: 30px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      transition: transform 0.4s ease;
+    }
+
+    .button::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .button:hover::after { left: 100%; }
+    .button:hover { transform: scale(1.05); }
+
+    /* Abstract dark texture instead of stock image */
+    .parallax {
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.04), transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.03), transparent 50%),
+        linear-gradient(to bottom, #000 0%, #050505 100%);
+    }
+
+    .parallax h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .parallax p {
+      max-width: 600px;
+      color: #bbb;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* Features */
+    .features h2 {
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.6);
+      padding: 40px 30px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.4s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .card:hover {
+      transform: translateY(-12px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Footer micro CTA */
+    footer {
+      padding: 80px 20px;
+      text-align: center;
+      background: #000;
+    }
+
+    .footer-cta {
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .copyright {
+      color: #555;
+      font-size: 0.85rem;
+    }
+
+    /* Scroll animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .fade-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      .parallax h2 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <h1 class="fade-up">Nexo</h1>
+    <p class="fade-up">Twój telefon. Twoja cena.</p>
+    <a href="https://www.vinted.pl/member/134778032" target="_blank" class="button fade-up">Zobacz sklep na Vinted</a>
+    <div class="mockup" id="mockup"></div>
+  </section>
+
+  <section class="parallax">
+    <h2 class="fade-up">Premium. Odnowione. Gotowe.</h2>
+    <p class="fade-up">Starannie wyselekcjonowane urządzenia Apple i wybrane modele Android. Każdy egzemplarz sprawdzony, wyceniony uczciwie i gotowy na nowego właściciela.</p>
+  </section>
+
+  <section class="features">
+    <h2 class="fade-up">Dlaczego Nexo?</h2>
+    <div class="grid">
+      <div class="card fade-up" style="transition-delay: 0.1s">
+        <h3>Sprawdzone urządzenia</h3>
+        <p>Każdy telefon przechodzi dokładne testy techniczne oraz kontrolę wizualną.</p>
+      </div>
+      <div class="card fade-up" style="transition-delay: 0.25s">
+        <h3>Uczciwa cena</h3>
+        <p>Płacisz za jakość, nie za marketing.</p>
+      </div>
+      <div class="card fade-up" style="transition-delay: 0.4s">
+        <h3>Ekologiczny wybór</h3>
+        <p>Dając drugie życie urządzeniom, wspierasz zrównoważoną technologię.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-cta fade-up">Gotowy na zmianę telefonu?</div>
+    <a href="https://www.vinted.pl/" target="_blank" class="button fade-up" style="margin-bottom:40px;">Przejdź do sklepu</a>
+    <div class="copyright">© 2026 Nexo. Wszystkie prawa zastrzeżone.</div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const mockup = document.getElementById('mockup');
+      mockup.style.transform = `translateY(${scrollY * 0.15}px) rotate(${scrollY * 0.015}deg)`;
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
